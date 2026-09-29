@@ -1,0 +1,44 @@
+services:
+
+  app:
+    build: .
+    container_name: opsmate-app
+    ports:
+      - "3000:3000"
+
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: opsmate
+      DB_USER: opsmate
+      DB_PASSWORD: opsmate123
+
+    depends_on:
+      - db
+
+    networks:
+      - opsmate-net
+
+
+  db:
+    image: postgres:16
+    container_name: opsmate-db
+
+    environment:
+      POSTGRES_DB: opsmate
+      POSTGRES_USER: opsmate
+      POSTGRES_PASSWORD: opsmate123
+
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+    networks:
+      - opsmate-net
+
+
+networks:
+  opsmate-net:
+
+
+volumes:
+  db-data:
